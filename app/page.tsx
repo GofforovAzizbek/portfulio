@@ -1,341 +1,243 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import ThemeToggle from "./ui/ThemeToggle";
+import { motion, useScroll, useSpring } from "framer-motion";
+import { useEffect, useState } from "react";
+import { Send } from "lucide-react";
 
-const PROFILE = {
-  name: "Your Name",
-  role: "Frontend Developer",
-  subtitle: "REACT · NEXT.JS · TYPESCRIPT",
-  location: "Tashkent, UZ",
-  age: "21",
-  languages: "UZ · RU · EN",
-  status: "● Open to work",
-  summary: "Frontend developer from Tashkent. Building beautiful interfaces with React.",
-  email: "your@email.com",
-  github: "https://github.com/yourname",
-  linkedin: "https://linkedin.com/in/yourname",
-  telegram: "https://t.me/yourname",
-};
-
-const PROJECTS = [
-  {
-    number: "01",
-    type: "E-COMMERCE",
-    year: "2025",
-    title: "Market Platform",
-    description: "High-performance e-commerce with catalog, filters, cart. Built with React, Zustand, and Supabase backend.",
-    tags: ["React", "Zustand", "Supabase", "Tailwind"],
-  },
-  {
-    number: "02",
-    type: "DELIVERY",
-    year: "2025",
-    title: "Food Delivery App",
-    description: "Food delivery startup project. Real-time order tracking, restaurant management, and payment integration.",
-    tags: ["React", "Node.js", "MongoDB", "Stripe"],
-  },
-  {
-    number: "03",
-    type: "NEWS PLATFORM",
-    year: "2025",
-    title: "Sport News",
-    description: "Real-time sports news aggregator with filtering, search, and personalized feeds.",
-    tags: ["React", "TypeScript", "API", "Tailwind"],
-  },
-];
-
-const INTERESTS = [
-  "Clean Code",
-  "Professional Approach",
-  "Problem Solving",
-  "Sports & Fitness",
-  "Traveling",
-  "Learning New Things",
-];
-
-function AnimatedText({ text, className = "" }: { text: string; className?: string }) {
-  const containerRef = useRef<HTMLDivElement>(null);
+/* ================= CURSOR ================= */
+function SmartCursor() {
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const [active, setActive] = useState(false);
 
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const speed = 2;
-    let position = 0;
-
-    const animate = () => {
-      position -= speed;
-      if (position < -container.scrollWidth / 2) {
-        position = 0;
-      }
-      container.style.transform = `translateX(${position}px)`;
-      requestAnimationFrame(animate);
+    const move = (e: MouseEvent) => {
+      setPos({ x: e.clientX, y: e.clientY });
+      const el = e.target as HTMLElement;
+      setActive(el.closest("a, button") !== null);
     };
 
-    animate();
+    window.addEventListener("mousemove", move);
+    return () => window.removeEventListener("mousemove", move);
   }, []);
 
   return (
-    <div className={`overflow-hidden whitespace-nowrap ${className}`}>
-      <div ref={containerRef} className="flex gap-8">
-        {Array(3)
-          .fill(null)
-          .map((_, i) => (
-            <span key={i} className="text-sm font-bold tracking-wider opacity-30">
-              {text}
-            </span>
-          ))}
-      </div>
-    </div>
+    <motion.div
+      className="fixed top-0 left-0 z-[9999] pointer-events-none"
+      animate={{ x: pos.x - 10, y: pos.y - 10, scale: active ? 1.6 : 1 }}
+    >
+      <div className="w-5 h-5 border border-black rounded-full" />
+    </motion.div>
   );
 }
 
-export default function Home() {
+/* ================= DATA ================= */
+
+const SKILLS = [
+  "Next.js (App Router, SSR, ISR)",
+  "React (Hooks, Performance)",
+  "TypeScript",
+  "Tailwind CSS",
+  "Zustand / Redux",
+  "Node.js (API)",
+  "Supabase / Firebase",
+  "PostgreSQL",
+  "REST API Integration",
+  "SEO Optimization",
+  "VueJS / PHP",
+  "Git & GitHub",
+];
+
+const PROJECTS = [
+  {
+    title: "E-Commerce Platform",
+    desc: "Full stack online store with authentication, payments (Stripe), admin dashboard and SEO optimization.",
+    link: "#",
+  },
+  {
+    title: "SaaS Dashboard",
+    desc: "Advanced analytics dashboard with charts, real-time data and role-based access.",
+    link: "#",
+  },
+  {
+    title: "Telegram Music Bot",
+    desc: "Bot system for searching and downloading music using APIs and automation.",
+    link: "#",
+  },
+];
+
+/* ================= MAIN ================= */
+
+export default function Portfolio() {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress);
+
   return (
-    <div className="min-h-screen bg-white dark:bg-zinc-950">
-      {/* Header */}
-      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur dark:bg-zinc-950/80 border-b border-zinc-200 dark:border-zinc-800">
-        <div className="mx-auto max-w-6xl px-5 sm:px-6 py-4 flex items-center justify-between">
-          <div className="text-lg font-bold tracking-tight">
-            {PROFILE.name.split(" ")[0].toUpperCase()}.
-          </div>
-          <div className="flex items-center gap-4">
-            <nav className="hidden sm:flex gap-6 text-sm text-zinc-600 dark:text-zinc-400">
-              <a href="#about" className="hover:text-zinc-950 dark:hover:text-zinc-50 transition">
-                ABOUT
-              </a>
-              <a href="#projects" className="hover:text-zinc-950 dark:hover:text-zinc-50 transition">
-                WORK
-              </a>
-              <a href="#contact" className="hover:text-zinc-950 dark:hover:text-zinc-50 transition">
-                CONTACT
-              </a>
-            </nav>
-            <ThemeToggle />
-          </div>
-        </div>
+    <div className="bg-white text-black">
+      <SmartCursor />
+
+      {/* SCROLL LINE */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-black z-50"
+        style={{ scaleX }}
+      />
+
+      {/* HEADER */}
+      <header className="fixed top-0 left-0 w-full z-40 flex justify-between items-center px-6 py-4 bg-white/80 backdrop-blur border-b">
+        <h1 className="font-black">G'AFFOROV</h1>
+        <nav className="flex gap-6 text-sm font-bold">
+          <a href="#about">About</a>
+          <a href="#skills">Skills</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
+        </nav>
       </header>
 
-      <main>
-        {/* Hero Section */}
-        <section className="mx-auto max-w-6xl px-5 sm:px-6 py-24 sm:py-32">
-          <div className="space-y-8">
-            <div className="space-y-4">
-              <p className="text-sm font-mono text-zinc-600 dark:text-zinc-400">
-                {PROFILE.status}
-              </p>
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight">
-                I build interfaces,<br />
-                that are <span className="italic">pleasant</span><br />
-                to use.
-              </h1>
-            </div>
+      {/* HERO */}
+      <section className="h-screen flex flex-col justify-center items-center text-center px-6">
+        <h1 className="text-6xl md:text-7xl font-black mb-6">
+          Frontend Engineer
+        </h1>
 
-            <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed">
-              {PROFILE.summary}
-            </p>
+        <p className="max-w-xl text-zinc-500">
+          2+ years of experience building scalable, fast and modern web
+          applications using Next.js, React and modern technologies.
+        </p>
 
-            <div className="flex items-center gap-4 text-sm pt-8">
-              <a
-                href="#projects"
-                className="font-semibold hover:underline"
-              >
-                SCROLL ↓
+        <div className="flex gap-4 mt-6">
+          <a
+            href="/resume.pdf"
+            download
+            className="px-6 py-3 border border-black font-bold"
+          >
+            Download Resume
+          </a>
+
+          <a
+            href="#contact"
+            className="px-6 py-3 bg-black text-white font-bold"
+          >
+            Contact Me
+          </a>
+        </div>
+      </section>
+
+      {/* ABOUT */}
+      <section id="about" className="py-20 px-6 max-w-4xl mx-auto">
+        <h2 className="text-3xl font-bold mb-6">About Me</h2>
+
+        <p className="text-zinc-600 leading-7 mb-4">
+          I am a passionate Frontend Developer with over 2 years of real-world
+          experience building production-ready web applications.
+        </p>
+
+        <p className="text-zinc-600 leading-7 mb-4">
+          I specialize in building high-performance applications using Next.js
+          and React.
+        </p>
+
+        <p className="text-zinc-600 leading-7">
+          I have worked on eCommerce platforms, dashboards and automation tools.
+        </p>
+      </section>
+
+      {/* SKILLS */}
+      <section id="skills" className="py-20 px-6 bg-black text-white">
+        <h2 className="text-3xl font-bold mb-10 text-center">Skills</h2>
+
+        <div className="flex flex-wrap gap-3 justify-center max-w-4xl mx-auto">
+          {SKILLS.map((s, i) => (
+            <span key={i} className="px-4 py-2 border text-sm">
+              {s}
+            </span>
+          ))}
+        </div>
+      </section>
+
+      {/* PROJECTS */}
+      <section id="projects" className="py-20 px-6 max-w-5xl mx-auto">
+        <h2 className="text-3xl font-bold mb-10">Projects</h2>
+
+        <div className="space-y-10">
+          {PROJECTS.map((p, i) => (
+            <div
+              key={i}
+              className="border p-6 rounded-xl hover:shadow-lg transition"
+            >
+              <h3 className="text-xl font-bold mb-2">{p.title}</h3>
+              <p className="text-zinc-500 mb-3">{p.desc}</p>
+
+              <a href={p.link} className="underline font-semibold">
+                View Project →
               </a>
             </div>
-          </div>
-        </section>
+          ))}
+        </div>
+      </section>
 
-        {/* Projects Section */}
-        <section id="projects" className="mx-auto max-w-6xl px-5 sm:px-6 py-24 border-t border-zinc-200 dark:border-zinc-800">
-          <div className="space-y-24">
-            {PROJECTS.map((project, idx) => (
-              <div key={idx} className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                {idx % 2 === 0 ? (
-                  <>
-                    <div className="space-y-6 order-2 md:order-1">
-                      <div className="space-y-2">
-                        <p className="text-xs font-mono tracking-widest text-zinc-600 dark:text-zinc-400">
-                          {project.type} · {project.year}
-                        </p>
-                        <h3 className="text-3xl sm:text-4xl font-bold">{project.title}</h3>
-                      </div>
-                      <p className="text-base text-zinc-700 dark:text-zinc-300 leading-relaxed">
-                        {project.description}
-                      </p>
-                      <div className="flex flex-wrap gap-2 pt-4">
-                        {project.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="px-3 py-1 text-xs font-mono border border-zinc-300 dark:border-zinc-700 rounded-full"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="order-1 md:order-2 bg-zinc-100 dark:bg-zinc-800 rounded-2xl h-80 flex items-center justify-center text-6xl">
-                      📱
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="bg-zinc-100 dark:bg-zinc-800 rounded-2xl h-80 flex items-center justify-center text-6xl">
-                      🛍️
-                    </div>
-                    <div className="space-y-6">
-                      <div className="space-y-2">
-                        <p className="text-xs font-mono tracking-widest text-zinc-600 dark:text-zinc-400">
-                          {project.type} · {project.year}
-                        </p>
-                        <h3 className="text-3xl sm:text-4xl font-bold">{project.title}</h3>
-                      </div>
-                      <p className="text-base text-zinc-700 dark:text-zinc-300 leading-relaxed">
-                        {project.description}
-                      </p>
-                      <div className="flex flex-wrap gap-2 pt-4">
-                        {project.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="px-3 py-1 text-xs font-mono border border-zinc-300 dark:border-zinc-700 rounded-full"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
+      {/* CONTACT FINAL */}
+      <section id="contact" className="py-20 px-6 text-center">
+        <h2 className="text-2xl mb-4 font-bold">Contact</h2>
 
-        {/* About Section */}
-        <section id="about" className="mx-auto max-w-6xl px-5 sm:px-6 py-24 border-t border-zinc-200 dark:border-zinc-800">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div className="space-y-8">
-              <div>
-                <h2 className="text-4xl sm:text-5xl font-bold mb-4">About</h2>
-                <p className="text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed">
-                  Frontend developer from {PROFILE.location}. Learning React and building beautiful interfaces. Interested in tasks where UX and clean code matter.
-                </p>
-              </div>
+        <p className="text-zinc-500 mb-10">
+          Have a project or want to collaborate?
+        </p>
 
-              <div className="space-y-4">
-                <h3 className="font-semibold text-sm uppercase tracking-wider">Quick Facts</h3>
-                <div className="space-y-3">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-zinc-600 dark:text-zinc-400">Location</span>
-                    <span className="font-mono">{PROFILE.location}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-zinc-600 dark:text-zinc-400">Age</span>
-                    <span className="font-mono">{PROFILE.age}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-zinc-600 dark:text-zinc-400">Languages</span>
-                    <span className="font-mono">{PROFILE.languages}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-zinc-600 dark:text-zinc-400">Status</span>
-                    <span className="font-mono text-green-600">{PROFILE.status}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+        {/* EMAIL FORM */}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            const form = e.target as HTMLFormElement;
+            const email = (form.elements.namedItem("email") as HTMLInputElement)
+              .value;
+            const message = (
+              form.elements.namedItem("message") as HTMLTextAreaElement
+            ).value;
 
-            <div className="space-y-8">
-              <h3 className="font-semibold text-sm uppercase tracking-wider">What I Like</h3>
-              <div className="flex flex-wrap gap-3">
-                {INTERESTS.map((interest) => (
-                  <span
-                    key={interest}
-                    className="px-4 py-2 bg-zinc-100 dark:bg-zinc-800 rounded-full text-sm font-medium"
-                  >
-                    {interest}
-                  </span>
-                ))}
-              </div>
+            window.location.href = `mailto:azizbek@example.com?subject=Portfolio Contact&body=From: ${email}%0A%0A${message}`;
+          }}
+          className="max-w-xl mx-auto space-y-4 mb-10"
+        >
+          <input
+            type="email"
+            name="email"
+            required
+            placeholder="Your email"
+            className="w-full border px-4 py-3 rounded-lg outline-none focus:border-black"
+          />
 
-              <div className="pt-8">
-                <h3 className="font-semibold text-sm uppercase tracking-wider mb-4">Tech Stack</h3>
-                <div className="space-y-2">
-                  <p className="text-sm">
-                    <span className="font-mono font-semibold">Frontend</span>
-                    {" · "}
-                    <span className="text-zinc-600 dark:text-zinc-400">React, Next.js, TypeScript, Tailwind</span>
-                  </p>
-                  <p className="text-sm">
-                    <span className="font-mono font-semibold">Backend</span>
-                    {" · "}
-                    <span className="text-zinc-600 dark:text-zinc-400">Node.js, Express, PostgreSQL</span>
-                  </p>
-                  <p className="text-sm">
-                    <span className="font-mono font-semibold">Tools</span>
-                    {" · "}
-                    <span className="text-zinc-600 dark:text-zinc-400">Git, Docker, Vercel</span>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+          <textarea
+            name="message"
+            required
+            placeholder="Your message..."
+            rows={4}
+            className="w-full border px-4 py-3 rounded-lg outline-none focus:border-black"
+          />
 
-        {/* Animated Text Section */}
-        <section className="py-16 border-t border-zinc-200 dark:border-zinc-800">
-          <AnimatedText text="LET'S BUILD SOMETHING TOGETHER — " className="text-zinc-300 dark:text-zinc-700" />
-        </section>
+          <button
+            type="submit"
+            className="w-full bg-black text-white py-3 rounded-lg font-bold hover:opacity-80 transition"
+          >
+            Send Message
+          </button>
+        </form>
 
-        {/* Contact Section */}
-        <section id="contact" className="mx-auto max-w-6xl px-5 sm:px-6 py-24 border-t border-zinc-200 dark:border-zinc-800">
-          <div className="space-y-12">
-            <div className="space-y-4">
-              <h2 className="text-4xl sm:text-5xl font-bold">Open to opportunities.</h2>
-              <p className="text-lg text-zinc-600 dark:text-zinc-400">
-                Send a message — I respond quickly.
-              </p>
-            </div>
+        {/* TELEGRAM */}
+        <div className="flex justify-center">
+          <a
+            href="https://t.me/yourusername"
+            target="_blank"
+            className="flex items-center gap-3 px-6 py-3 border rounded-xl hover:bg-black hover:text-white transition"
+          >
+            <Send size={20} />
+            <span className="font-semibold">Telegram</span>
+          </a>
+        </div>
+      </section>
 
-            <div className="flex flex-col sm:flex-row gap-4">
-              <a
-                href={`mailto:${PROFILE.email}`}
-                className="px-6 py-3 bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 font-semibold rounded-lg hover:opacity-80 transition"
-              >
-                ✉ EMAIL {PROFILE.email}
-              </a>
-              <a
-                href={PROFILE.telegram}
-                target="_blank"
-                rel="noreferrer"
-                className="px-6 py-3 border border-zinc-300 dark:border-zinc-700 font-semibold rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
-              >
-                ✈ TELEGRAM
-              </a>
-              <a
-                href={PROFILE.github}
-                target="_blank"
-                rel="noreferrer"
-                className="px-6 py-3 border border-zinc-300 dark:border-zinc-700 font-semibold rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
-              >
-                ⚈ GITHUB
-              </a>
-            </div>
-          </div>
-        </section>
-
-        {/* Footer */}
-        <footer className="mx-auto max-w-6xl px-5 sm:px-6 py-12 border-t border-zinc-200 dark:border-zinc-800 mt-24">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-sm text-zinc-600 dark:text-zinc-400">
-            <p>© 2026 {PROFILE.name}. All rights reserved.</p>
-            <p>Built with Next.js + Tailwind. Deployed on Vercel.</p>
-            <a href="#top" className="hover:text-zinc-950 dark:hover:text-zinc-50">
-              ↑ Back to top
-            </a>
-          </div>
-        </footer>
-      </main>
+      {/* FOOTER */}
+      <footer className="py-10 text-center text-xs text-zinc-400">
+        © 2026 AZIZBEK G'AFFOROV
+      </footer>
     </div>
   );
 }

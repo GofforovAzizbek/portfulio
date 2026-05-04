@@ -41,6 +41,7 @@ body {
   background: color-mix(in srgb, var(--fg) 18%, transparent);
 }
 
+/* Enhanced gradient backgrounds */
 .noise-bg {
   background-image:
     radial-gradient(
@@ -66,12 +67,13 @@ body {
   backdrop-filter: blur(12px);
 }
 
+/* Enhanced reveal animation */
 .reveal {
   opacity: 0;
-  transform: translate3d(0, 12px, 0);
+  transform: translate3d(0, 20px, 0);
   transition:
-    opacity 700ms cubic-bezier(0.2, 0.8, 0.2, 1),
-    transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    opacity 800ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 800ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .reveal--shown {
@@ -87,13 +89,14 @@ button {
   @apply transition-all duration-300;
 }
 
+/* Enhanced animations */
 @keyframes float {
   0%,
   100% {
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-4px);
+    transform: translateY(-8px);
   }
 }
 
@@ -103,7 +106,28 @@ button {
     box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
   }
   50% {
-    box-shadow: 0 0 30px rgba(124, 58, 237, 0.5);
+    box-shadow: 0 0 40px rgba(124, 58, 237, 0.6);
+  }
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
   }
 }
 
@@ -111,6 +135,43 @@ button {
   animation: float 3s ease-in-out infinite;
 }
 
+.animate-glow {
+  animation: glow 3s ease-in-out infinite;
+}
+
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  background-size: 1000px 100%;
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.6;
+    filter: blur(20px);
+  }
+  50% {
+    opacity: 1;
+    filter: blur(30px);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* Custom cursor */
 .cursor-dot,
 .cursor-ring {
   display: none;
@@ -139,35 +200,114 @@ button {
   }
 
   .cursor-dot {
-    width: 8px;
-    height: 8px;
-    margin-left: -4px;
-    margin-top: -4px;
+    width: 10px;
+    height: 10px;
+    margin-left: -5px;
+    margin-top: -5px;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--fg) 75%, transparent);
-    box-shadow: 0 0 0 1px color-mix(in srgb, var(--fg) 18%, transparent);
+    background: color-mix(in srgb, var(--fg) 85%, transparent);
+    box-shadow:
+      0 0 0 1.5px color-mix(in srgb, var(--fg) 25%, transparent),
+      0 0 10px rgba(124, 58, 237, 0.5);
+    transition:
+      width 150ms,
+      height 150ms,
+      background 150ms;
   }
 
   .cursor-ring {
-    width: 36px;
-    height: 36px;
-    margin-left: -18px;
-    margin-top: -18px;
+    width: 40px;
+    height: 40px;
+    margin-left: -20px;
+    margin-top: -20px;
+    border: 2px solid color-mix(in srgb, var(--fg) 30%, transparent);
     border-radius: 999px;
-    border: 1px solid color-mix(in srgb, var(--fg) 22%, transparent);
-    background: color-mix(in srgb, var(--fg) 6%, transparent);
-    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.28);
     transition:
-      width 140ms ease,
-      height 140ms ease;
+      width 150ms,
+      height 150ms,
+      border-color 150ms,
+      transform 150ms;
+    box-shadow: inset 0 0 10px rgba(124, 58, 237, 0.2);
   }
 
   a:hover .cursor-ring,
   button:hover .cursor-ring,
   [role="button"]:hover .cursor-ring {
-    width: 50px;
-    height: 50px;
-    margin-left: -25px;
-    margin-top: -25px;
+    width: 60px;
+    height: 60px;
+    margin-left: -30px;
+    margin-top: -30px;
+    border-color: color-mix(in srgb, var(--fg) 60%, transparent);
+    box-shadow:
+      inset 0 0 10px rgba(124, 58, 237, 0.4),
+      0 0 20px rgba(124, 58, 237, 0.3);
+    transform: scale(1.1);
   }
+}
+
+/* Smooth transitions for theme changes */
+html,
+body {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+/* Enhanced scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--fg) 20%, transparent);
+  border-radius: 999px;
+  transition: background 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--fg) 40%, transparent);
+}
+
+/* Improved link underline animation */
+a {
+  position: relative;
+}
+
+a::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: currentColor;
+  transition: width 0.3s ease;
+}
+
+a:hover::after {
+  width: 100%;
+}
+
+/* Focus styles for accessibility */
+:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--fg) 50%, transparent);
+  outline-offset: 2px;
+}
+
+/* Smooth page transitions */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+body {
+  animation: fadeIn 0.3s ease-out;
 }

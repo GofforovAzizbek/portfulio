@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Cursor from "./ui/Cursor";
+// import Cursor from "./ui/Cursor";
 
 export const metadata: Metadata = {
   title: {
@@ -62,7 +62,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen flex flex-col">
-        <Cursor />
+        {/* <Cursor /> */}
         {children}
       </body>
     </html>

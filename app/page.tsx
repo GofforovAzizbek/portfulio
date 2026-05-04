@@ -175,11 +175,7 @@ export default function Portfolio() {
 
         <nav className="hidden md:flex gap-10 text-[11px] font-bold tracking-widest uppercase text-zinc-500">
           {["about", "skills", "work", "contact"].map((item) => (
-            <a
-              key={item}
-              href={`#${item}`}
-              className="hover:text-black transition-colors"
-            >
+            <a key={item} href={`#${item}`} className="">
               {item}
             </a>
           ))}
@@ -224,7 +220,7 @@ export default function Portfolio() {
               <a
                 href="/resume.pdf"
                 download="Azizbek_Gafforov_Resume.pdf"
-                className="w-full md:w-auto px-10 py-5 border-2 border-zinc-200 text-zinc-600 font-bold rounded-full hover:border-black hover:text-black transition-all text-xs tracking-widest uppercase flex items-center justify-center gap-2"
+                className="w-full md:w-auto px-10 py-5 border-2 text-zinc-600 font-bold rounded-full hover:text-black transition-all text-xs tracking-widest uppercase flex items-center justify-center gap-2"
               >
                 <Download size={16} /> Resume Yuklash
               </a>

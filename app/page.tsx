@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useSpring } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import {
   Send,
   ExternalLink,
@@ -12,6 +12,8 @@ import {
   Zap,
   Download,
 } from "lucide-react";
+import SmartCursor from "./components/SmartCursor";
+import { NAV_ITEMS, PROJECTS, SKILLS_CATEGORIES, STATS } from "./pageData";
 
 /* ================= ICONS (SAFE FOR TURBOPACK) ================= */
 const GitHubIcon = ({
@@ -37,120 +39,23 @@ const GitHubIcon = ({
   </svg>
 );
 
-/* ================= CUSTOM CURSOR ================= */
-function SmartCursor() {
-  const [pos, setPos] = useState({ x: 0, y: 0 });
-  const [active, setActive] = useState(false);
-
-  useEffect(() => {
-    const move = (e: MouseEvent) => {
-      setPos({ x: e.clientX, y: e.clientY });
-      const el = e.target as HTMLElement;
-      setActive(el.closest("a, button, .interactive") !== null);
-    };
-    window.addEventListener("mousemove", move);
-    return () => window.removeEventListener("mousemove", move);
+function useSkillIconByName() {
+  return useMemo(() => {
+    const icons = {
+      Layers: <Layers size={20} />,
+      Terminal: <Terminal size={20} />,
+      Zap: <Zap size={20} />,
+    } as const;
+    return (name: (typeof SKILLS_CATEGORIES)[number]["icon"]) =>
+      icons[name] ?? null;
   }, []);
-
-  return (
-    <motion.div
-      className="fixed top-0 left-0 z-[9999] pointer-events-none hidden md:block"
-      animate={{
-        x: pos.x - 12,
-        y: pos.y - 12,
-        scale: active ? 2.5 : 1,
-        backgroundColor: active ? "rgba(0,0,0,0.05)" : "transparent",
-      }}
-      transition={{ type: "spring", stiffness: 450, damping: 30 }}
-    >
-      <div className="w-6 h-6 border-2 border-black rounded-full" />
-    </motion.div>
-  );
 }
-
-/* ================= CONSTANTS & DATA ================= */
-const STATS = [
-  { label: "Tajriba (Yil)", value: "2+" },
-  { label: "Muvaffaqiyatli Loyihalar", value: "15+" },
-  { label: "Mamnun Mijozlar", value: "10+" },
-];
-
-const SKILLS_CATEGORIES = [
-  {
-    title: "Frontend Architecture",
-    icon: <Layers size={20} />,
-    items: [
-      "Next.js 15 (App Router)",
-      "React 19",
-      "TypeScript",
-      "Tailwind CSS",
-      "Framer Motion",
-      "Zustand / Redux",
-    ],
-  },
-  {
-    title: "Backend & Systems",
-    icon: <Terminal size={20} />,
-    items: [
-      "Node.js",
-      "PostgreSQL",
-      "Supabase / Firebase",
-      "Prisma ORM",
-      "REST / GraphQL API",
-      "Docker Basics",
-    ],
-  },
-  {
-    title: "Optimization & Tools",
-    icon: <Zap size={20} />,
-    items: [
-      "SEO Optimization",
-      "Web Performance",
-      "Git & CI/CD",
-      "Responsive UI/UX",
-      "Linux Server",
-      "Testing (Jest)",
-    ],
-  },
-];
-
-const PROJECTS = [
-  {
-    title: "Global E-Commerce Platform",
-    category: "Full-Stack System",
-    desc: "Stripe integratsiyasi, admin paneli va real-vaqtda savatcha boshqaruvi bilan jihozlangan yuqori tezlikdagi do'kon platformasi.",
-    tech: ["Next.js", "TypeScript", "Prisma", "PostgreSQL"],
-    github: "https://foodzy-exam.vercel.app",
-    link: "#",
-    image:
-      "https://images.unsplash.com/photo-1557821552-17105176677c?q=80&w=1000&auto=format&fit=crop",
-  },
-  {
-    title: "Fintech Dashboard",
-    category: "Data Visualization",
-    desc: "Bank operatsiyalari va tahlillarni real-vaqtda kuzatish uchun dashboard. Murakkab chartlar va qorong'u rejim integratsiyasi.",
-    tech: ["React", "Tailwind", "Zustand", "Recharts"],
-    github: "https://github.com/GofforovAzizbek",
-    link: "#",
-    image:
-      "https://images.unsplash.com/photo-1551288049-bbbda536339a?q=80&w=1000&auto=format&fit=crop",
-  },
-  {
-    title: "AI Automation Bot",
-    category: "Backend / Automation",
-    desc: "Telegram bot orqali musiqa, video yuklash va ma'lumotlarni qayta ishlashni avtomatlashtiruvchi backend tizimi.",
-    tech: ["Node.js", "Telegraf", "OpenAI API", "Redis"],
-    github: "https://github.com/GofforovAzizbek",
-    link: "#",
-    image:
-      "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1000&auto=format&fit=crop",
-  },
-];
 
 /* ================= MAIN COMPONENT ================= */
 export default function Portfolio() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
+  const getSkillIcon = useSkillIconByName();
 
   return (
     <div className="bg-[#fafafa] text-black selection:bg-black selection:text-white cursor-none">
@@ -174,7 +79,7 @@ export default function Portfolio() {
         </div>
 
         <nav className="hidden md:flex gap-10 text-[11px] font-bold tracking-widest uppercase text-zinc-500">
-          {["about", "skills", "work", "contact"].map((item) => (
+          {NAV_ITEMS.map((item) => (
             <a key={item} href={`#${item}`} className="">
               {item}
             </a>
@@ -296,7 +201,7 @@ export default function Portfolio() {
               >
                 <div className="flex items-center gap-5 mb-8">
                   <div className="p-4 bg-zinc-50 text-black rounded-2xl group-hover:bg-black group-hover:text-white transition-colors">
-                    {cat.icon}
+                    {getSkillIcon(cat.icon)}
                   </div>
                   <h4 className="font-black text-2xl tracking-tight">
                     {cat.title}

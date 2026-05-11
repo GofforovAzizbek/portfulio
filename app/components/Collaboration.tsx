@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { FaTelegramPlane, FaEnvelope } from "react-icons/fa";
 import { FiArrowUpRight, FiZap, FiCode, FiShield } from "react-icons/fi";
 
-const LUXURY_EASE = [0.62, 0.05, 0.01, 0.99] as const;
+const LUXURY_EASE = [0.16, 1, 0.3, 1];
 
 export default function Collaboration() {
   const highlights = [

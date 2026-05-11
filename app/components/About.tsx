@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { FaCode, FaShieldAlt, FaBolt, FaFingerprint } from "react-icons/fa";
 import { FiArrowUpRight } from "react-icons/fi";
 
-const LUXURY_EASE = [0.62, 0.05, 0.01, 0.99] as const;
+const LUXURY_EASE = [0.19, 1, 0.22, 1];
 
 export default function About() {
   const containerRef = useRef<HTMLDivElement>(null);

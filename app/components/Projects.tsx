@@ -5,7 +5,7 @@ import { projects } from "@/data/projects";
 import ProjectCard from "./ProjectCard";
 import { FiArrowRight, FiGithub } from "react-icons/fi";
 
-const LUXURY_EASE = [0.19, 1, 0.22, 1];
+const LUXURY_EASE = [0.62, 0.05, 0.01, 0.99] as const;
 
 export default function Projects() {
   return (

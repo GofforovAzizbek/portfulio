@@ -6,7 +6,7 @@ import { HiOutlineMail } from "react-icons/hi";
 import { FiArrowUpRight, FiUserPlus } from "react-icons/fi";
 import { LuFingerprint } from "react-icons/lu";
 
-const LUXURY_EASE = [0.16, 1, 0.3, 1];
+const LUXURY_EASE = [0.62, 0.05, 0.01, 0.99] as const;
 
 export default function Contact() {
   const contactMethods = [

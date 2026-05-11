@@ -61,8 +61,6 @@ describe('About Component', () => {
     const section = screen.getByRole('region')
     expect(section.className).toContain('w-full')
   })
-})
-
 
   test('displays security skills', () => {
     render(<About />)

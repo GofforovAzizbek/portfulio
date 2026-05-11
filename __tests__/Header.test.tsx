@@ -67,11 +67,3 @@ describe('Header Component', () => {
     })
   })
 })
-
-    render(<Header />)
-    expect(screen.getByText('HOME')).toBeInTheDocument()
-    expect(screen.getByText('ABOUT')).toBeInTheDocument()
-    expect(screen.getByText('SKILLS')).toBeInTheDocument()
-    expect(screen.getByText('PROJECTS')).toBeInTheDocument()
-  })
-})

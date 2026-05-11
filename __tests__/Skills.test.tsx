@@ -55,8 +55,9 @@ describe('Skills Component', () => {
     const { container } = render(<Skills />)
     expect(container.firstChild).toBeInTheDocument()
   })
-})
 
+  test('renders frontend technologies', () => {
+    render(<Skills />)
     expect(screen.getByText(/React/i)).toBeInTheDocument()
     expect(screen.getByText(/TypeScript/i)).toBeInTheDocument()
     expect(screen.getByText(/Next.js/i)).toBeInTheDocument()

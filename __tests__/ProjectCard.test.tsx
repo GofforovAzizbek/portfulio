@@ -21,17 +21,17 @@ const mockProject = {
 describe("ProjectCard Component", () => {
   test("renders project title", () => {
     render(<ProjectCard project={mockProject} index={0} />);
-    expect(screen.getByText(/Test Loyihasi/i)).toBeInTheDocument();
+    expect(screen.getByText(/Test Project/i)).toBeInTheDocument();
   });
 
   test("renders project description", () => {
     render(<ProjectCard project={mockProject} index={0} />);
-    expect(screen.getByText(/Bu test loyiha/i)).toBeInTheDocument();
+    expect(screen.getByText(/This is a test project/i)).toBeInTheDocument();
   });
 
   test("renders project image", () => {
     render(<ProjectCard project={mockProject} index={0} />);
-    const image = screen.getByAltText(/Test Loyihasi/i);
+    const image = screen.getByAltText(/Test Project/i);
     expect(image).toBeInTheDocument();
   });
 
@@ -56,12 +56,12 @@ describe("ProjectCard Component", () => {
 
   test("displays project status badge", () => {
     render(<ProjectCard project={mockProject} index={0} />);
-    expect(screen.getByText(/Tamamlandi/i)).toBeInTheDocument();
+    expect(screen.getByText(/Completed/i)).toBeInTheDocument();
   });
 
   test("displays project category badge", () => {
     render(<ProjectCard project={mockProject} index={0} />);
-    expect(screen.getByText(/Full-Stack/i)).toBeInTheDocument();
+    expect(screen.getByText(/Full-stack/i)).toBeInTheDocument();
   });
 
   test("links open in new tab", () => {
@@ -88,6 +88,6 @@ describe("ProjectCard Component", () => {
       technologies: ["React", "TypeScript", "Tailwind", "Next.js", "Prisma"],
     };
     render(<ProjectCard project={projectManyTech} index={0} />);
-    expect(screen.getByText(/\+2 boshqa/i)).toBeInTheDocument();
+    expect(screen.getByText(/\+2 more/i)).toBeInTheDocument();
   });
 });

@@ -1,68 +1,48 @@
 import type { Metadata } from "next";
 import "./globals.css";
-// import Cursor from "./ui/Cursor";
 
 export const metadata: Metadata = {
   title: {
-    default: "Developer Portfolio",
-    template: "%s • Portfolio",
+    default: "Azizbek_G'afforov",
+    template: "Azizbek_G'afforov",
   },
   description:
-    "Full Stack Developer. Building exceptional digital experiences with modern web technologies. Next.js, React, TypeScript, and more.",
+    "Full-stack developer portfolio focused on modern web apps, secure APIs, and clean UI/UX. Next.js, React, TypeScript, TailwindCSS.",
   keywords: [
-    "Developer",
-    "Portfolio",
-    "Full Stack",
-    "Next.js",
-    "React",
+    "Full-stack developer",
+    "Next.js portfolio",
+    "React developer",
     "TypeScript",
+    "TailwindCSS",
+    "Node.js",
+    "PostgreSQL",
+    "API security",
+    "Cybersecurity",
+    "Web developer",
   ],
-  authors: [{ name: "Developer" }],
+  robots: { index: true, follow: true },
   openGraph: {
-    title: "Developer Portfolio",
-    description:
-      "Full Stack Developer. Building exceptional digital experiences with modern web technologies.",
     type: "website",
-    url: "https://yourportfolio.com",
-    siteName: "Developer Portfolio",
+    title: "Azizbek_G'afforov | Full-Stack Developer Portfolio",
+    description:
+      "Full-stack developer portfolio focused on modern web apps, secure APIs, and clean UI/UX.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Developer Portfolio",
-    description: "Full Stack Developer building modern web applications",
+    title: "Azizbek_G'afforov | Full-Stack Developer Portfolio",
+    description:
+      "Full-stack developer portfolio focused on modern web apps, secure APIs, and clean UI/UX.",
   },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html
-      lang="en"
-      className="h-full antialiased scroll-smooth"
-      suppressHydrationWarning
-    >
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (() => {
-                try {
-                  const theme = localStorage.getItem('theme');
-                  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                  const isDark = theme === 'dark' || (theme === null && prefersDark);
-                  document.documentElement.classList.toggle('dark', isDark);
-                  document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
-                } catch (e) {}
-              })()
-            `,
-          }}
-        />
-      </head>
-      <body className="min-h-screen flex flex-col">
-        {/* <Cursor /> */}
+    <html lang="en" className="scroll-smooth">
+      <body className="bg-black antialiased selection:bg-blue-500/30">
         {children}
       </body>
     </html>

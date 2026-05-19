@@ -21,15 +21,15 @@ export default function Contact() {
     {
       icon: FaTelegram,
       label: "TEXT ON TELEGRAM",
-      value: "@Azizbek_Gafforov",
-      href: "https://t.me/@zizbek_Gafforov",
+      value: "Azizbek_Gafforov",
+      href: "https://t.me/Azizbek_Gafforov",
       color: "from-blue-500 to-cyan-400",
       iconColor: "text-blue-400",
     },
     {
       icon: FaGithub,
       label: "VIEW GITHUB",
-      value: "github.com/yourusername",
+      value: "github.com/GofforovAzizbek",
       href: "https://github.com/GofforovAzizbek",
       color: "from-purple-600 to-pink-500",
       iconColor: "text-purple-500",

@@ -46,7 +46,7 @@ export const projects: Project[] = [
     image:
       "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&h=400&fit=crop",
     technologies: ["Python", "Linux", "Bash", "Network Security", "Scapy"],
-    githubUrl: "https://gofforovazizbek.github.io/CarStore",
+    githubUrl: "https://github.com/debian",
     category: "security",
     status: "completed",
     year: 2023,
